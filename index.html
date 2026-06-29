@@ -3,480 +3,786 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vocabulary – Payment Terms</title>
+<title>Ôn Tập Từ Vựng – 2 Bài Học</title>
 <style>
-  :root {
-    --bg: #0f172a;
-    --surface: #1e293b;
-    --surface2: #273548;
-    --border: #334155;
-    --accent: #6366f1;
-    --accent2: #818cf8;
-    --green: #22c55e;
-    --red: #ef4444;
-    --yellow: #f59e0b;
-    --text: #f1f5f9;
-    --muted: #94a3b8;
-    --radius: 14px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+:root {
+  --bg: #0c0f1a;
+  --s1: #141928;
+  --s2: #1c2235;
+  --s3: #232b40;
+  --border: #2d3a55;
+  --border2: #3d4f72;
+  --accent: #5b8dee;
+  --accent2: #7ba7f7;
+  --green: #34d399;
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --purple: #a78bfa;
+  --pink: #f472b6;
+  --text: #e8edf8;
+  --muted: #8896b3;
+  --r: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
 
-  /* HEADER */
-  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
-  header h1 { font-size: 1.2rem; font-weight: 700; color: var(--accent2); }
-  header span { background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-size: 1rem; font-weight: 800; color: var(--accent2); margin-right: 24px; white-space: nowrap; }
+.logo span { color: var(--purple); }
+.nav-tabs { display: flex; height: 100%; gap: 2px; }
+.ntab {
+  padding: 0 18px;
+  height: 100%;
+  display: flex; align-items: center;
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.ntab:hover { color: var(--text); }
+.ntab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+.ntab .ico { margin-right: 6px; }
 
-  /* TABS */
-  .tabs { display: flex; gap: 4px; padding: 20px 24px 0; flex-wrap: wrap; }
-  .tab { padding: 10px 22px; border-radius: 10px 10px 0 0; border: 1px solid var(--border); border-bottom: none; background: var(--surface); color: var(--muted); font-size: 0.9rem; cursor: pointer; transition: all .2s; font-weight: 500; }
-  .tab.active { background: var(--surface2); color: var(--text); border-bottom: 2px solid var(--accent); }
-  .tab:hover:not(.active) { color: var(--text); }
+/* ── LESSON SELECTOR ── */
+.lesson-bar {
+  background: var(--s2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.lesson-bar span { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.lbtn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--s1);
+  color: var(--muted);
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.lbtn:hover { border-color: var(--accent); color: var(--accent2); }
+.lbtn.active { background: rgba(91,141,238,.18); border-color: var(--accent); color: var(--accent2); }
+.lbtn.all { background: rgba(167,139,250,.12); border-color: var(--purple); color: var(--purple); }
+.lbtn.all.active { background: rgba(167,139,250,.25); }
 
-  /* PANELS */
-  .panel { display: none; padding: 24px; }
-  .panel.active { display: block; }
+/* ── PANELS ── */
+.panel { display: none; padding: 24px; max-width: 1100px; margin: 0 auto; }
+.panel.active { display: block; }
 
-  /* ── WORD LIST ── */
-  .word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
-  .word-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: border-color .2s, transform .1s; }
-  .word-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .word-card .word { font-size: 1.1rem; font-weight: 700; color: var(--accent2); display: flex; align-items: center; gap: 8px; }
-  .word-card .pos { font-size: 0.72rem; color: var(--yellow); background: rgba(245,158,11,.15); border-radius: 6px; padding: 2px 7px; font-weight: 600; }
-  .word-card .meaning { margin-top: 6px; color: var(--text); font-size: 0.95rem; }
-  .word-card .example { margin-top: 8px; color: var(--muted); font-size: 0.83rem; font-style: italic; border-left: 3px solid var(--accent); padding-left: 10px; }
-  .audio-btn { background: none; border: none; color: var(--accent2); cursor: pointer; font-size: 1rem; padding: 2px; line-height: 1; transition: transform .15s; }
-  .audio-btn:hover { transform: scale(1.2); }
+/* ── WORD LIST ── */
+.top-row { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+.search-wrap { display: flex; align-items: center; gap: 8px; background: var(--s2); border: 1px solid var(--border); border-radius: 10px; padding: 0 14px; flex: 1; max-width: 360px; }
+.search-wrap input { background: none; border: none; color: var(--text); font-size: 0.9rem; padding: 10px 0; outline: none; width: 100%; }
+.tag-filter { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border); background: var(--s2); color: var(--muted); font-size: 0.76rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+.tag.active { border-color: var(--yellow); color: var(--yellow); background: rgba(251,191,36,.1); }
 
-  /* ── FLASHCARD ── */
-  .fc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-  .fc-progress { font-size: 0.85rem; color: var(--muted); }
-  .fc-controls { display: flex; gap: 8px; }
-  .btn { padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 0.85rem; transition: all .2s; font-weight: 500; }
-  .btn:hover { border-color: var(--accent); color: var(--accent2); }
-  .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn-accent:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.wcard {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  transition: border-color .2s, transform .15s;
+}
+.wcard:hover { border-color: var(--accent); transform: translateY(-2px); }
+.wcard-top { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.wcard-word { font-size: 1.05rem; font-weight: 800; color: var(--accent2); flex: 1; }
+.wcard-pos { font-size: 0.7rem; color: var(--yellow); background: rgba(251,191,36,.12); border-radius: 5px; padding: 2px 7px; font-weight: 700; white-space: nowrap; margin-top: 3px; }
+.wcard-lesson { font-size: 0.66rem; padding: 2px 7px; border-radius: 5px; font-weight: 700; white-space: nowrap; margin-top: 3px; }
+.wcard-lesson.l1 { background: rgba(167,139,250,.15); color: var(--purple); }
+.wcard-lesson.l2 { background: rgba(52,211,153,.12); color: var(--green); }
+.wcard-meaning { font-size: 0.92rem; color: var(--text); margin-bottom: 6px; }
+.wcard-example { font-size: 0.81rem; color: var(--muted); font-style: italic; border-left: 3px solid var(--border2); padding-left: 10px; line-height: 1.5; }
+.wcard-note { margin-top: 8px; font-size: 0.78rem; color: var(--purple); background: rgba(167,139,250,.08); border-radius: 6px; padding: 6px 10px; }
+.abtn { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 1rem; padding: 2px 4px; transition: transform .15s; flex-shrink: 0; margin-top: 2px; }
+.abtn:hover { transform: scale(1.2); }
 
-  .fc-scene { perspective: 1000px; width: 100%; max-width: 520px; margin: 0 auto 28px; height: 300px; cursor: pointer; }
-  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,0,.2,1); }
-  .fc-inner.flipped { transform: rotateY(180deg); }
-  .fc-face { position: absolute; inset: 0; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; backface-visibility: hidden; padding: 32px; text-align: center; }
-  .fc-front { background: linear-gradient(135deg, #1e293b, #273548); border: 1px solid var(--border); }
-  .fc-back { background: linear-gradient(135deg, #1a1f3c, #1e293b); border: 1px solid var(--accent); transform: rotateY(180deg); }
-  .fc-word { font-size: 2.2rem; font-weight: 800; color: var(--accent2); margin-bottom: 8px; }
-  .fc-hint { font-size: 0.8rem; color: var(--muted); margin-top: 12px; }
-  .fc-pos { font-size: 0.8rem; color: var(--yellow); margin-bottom: 8px; }
-  .fc-meaning { font-size: 1.4rem; font-weight: 700; color: var(--green); margin-bottom: 12px; }
-  .fc-example { font-size: 0.88rem; color: var(--muted); font-style: italic; max-width: 380px; }
+/* ── GRAMMAR PANEL ── */
+.grammar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+.gcard { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+.gcard h3 { font-size: 0.95rem; font-weight: 800; color: var(--purple); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.gcard h3 .badge { font-size: 0.68rem; background: rgba(167,139,250,.2); border-radius: 5px; padding: 2px 8px; }
+.formula { background: var(--s3); border-radius: 8px; padding: 12px 14px; font-size: 0.82rem; color: var(--accent2); font-family: 'Courier New', monospace; margin-bottom: 10px; line-height: 1.7; }
+.formula strong { color: var(--yellow); }
+.example-box { border-left: 3px solid var(--purple); padding-left: 12px; font-size: 0.82rem; color: var(--muted); font-style: italic; line-height: 1.6; }
+.gcard .note { margin-top: 10px; font-size: 0.78rem; color: var(--green); background: rgba(52,211,153,.08); border-radius: 6px; padding: 8px 12px; }
 
-  .fc-nav { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .nav-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1.2rem; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; }
-  .nav-btn:hover { border-color: var(--accent); color: var(--accent2); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .know-btns { display: flex; gap: 12px; }
-  .know-yes { padding: 10px 24px; border-radius: 24px; border: none; background: var(--green); color: #fff; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: opacity .2s; }
-  .know-yes:hover { opacity: 0.85; }
-  .know-no { padding: 10px 24px; border-radius: 24px; border: none; background: var(--red); color: #fff; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: opacity .2s; }
-  .know-no:hover { opacity: 0.85; }
+/* ── FLASHCARD ── */
+.fc-wrap { max-width: 560px; margin: 0 auto; }
+.fc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.fc-prog { font-size: 0.85rem; color: var(--muted); }
+.fc-btns { display: flex; gap: 8px; }
+.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--s2); color: var(--text); cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: all .2s; }
+.btn:hover { border-color: var(--accent); color: var(--accent2); }
+.btn-a { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-a:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 
-  .fc-stats { display: flex; gap: 16px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
-  .stat-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 0.82rem; color: var(--muted); }
-  .stat-pill span { font-weight: 700; }
-  .stat-pill.green span { color: var(--green); }
-  .stat-pill.red span { color: var(--red); }
+.fc-scene { perspective: 1200px; height: 280px; cursor: pointer; margin-bottom: 24px; }
+.fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,0,.2,1); }
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-face { position: absolute; inset: 0; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; backface-visibility: hidden; padding: 32px; text-align: center; user-select: none; }
+.fc-front { background: linear-gradient(145deg, #1c2235, #141928); border: 1px solid var(--border2); }
+.fc-back { background: linear-gradient(145deg, #18203a, #141928); border: 1px solid var(--accent); transform: rotateY(180deg); }
+.fc-type { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 6px; }
+.fc-main { font-size: 1.9rem; font-weight: 900; color: var(--accent2); margin-bottom: 6px; line-height: 1.2; }
+.fc-sub { font-size: 0.78rem; color: var(--yellow); margin-bottom: 4px; }
+.fc-flip-hint { font-size: 0.74rem; color: var(--muted); margin-top: 14px; }
+.fc-answer { font-size: 1.3rem; font-weight: 800; color: var(--green); margin-bottom: 10px; }
+.fc-ex { font-size: 0.8rem; color: var(--muted); font-style: italic; max-width: 380px; }
+.fc-lesson-badge { font-size: 0.65rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; margin-bottom: 8px; }
+.fc-lesson-badge.l1 { background: rgba(167,139,250,.2); color: var(--purple); }
+.fc-lesson-badge.l2 { background: rgba(52,211,153,.15); color: var(--green); }
 
-  /* ── QUIZ ── */
-  .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-  .quiz-score { font-size: 0.9rem; color: var(--muted); }
-  .progress-bar { background: var(--surface); border-radius: 10px; height: 6px; margin-bottom: 24px; }
-  .progress-fill { background: var(--accent); height: 100%; border-radius: 10px; transition: width .4s; }
-  .quiz-question { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
-  .q-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
-  .q-text { font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1.4; }
-  .q-sub { margin-top: 6px; font-size: 0.85rem; color: var(--muted); font-style: italic; }
-  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-  @media (max-width: 500px) { .quiz-options { grid-template-columns: 1fr; } }
-  .opt { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 14px 18px; cursor: pointer; font-size: 0.95rem; text-align: left; color: var(--text); transition: all .2s; }
-  .opt:hover:not(:disabled) { border-color: var(--accent); background: var(--surface2); }
-  .opt.correct { border-color: var(--green); background: rgba(34,197,94,.12); color: var(--green); }
-  .opt.wrong { border-color: var(--red); background: rgba(239,68,68,.1); color: var(--red); }
-  .opt:disabled { cursor: default; }
-  .quiz-feedback { background: var(--surface); border-radius: 12px; padding: 16px 20px; font-size: 0.9rem; display: none; }
-  .quiz-feedback.show { display: block; }
-  .quiz-feedback.ok { border-left: 4px solid var(--green); }
-  .quiz-feedback.err { border-left: 4px solid var(--red); }
+.fc-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.nav-circle { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border); background: var(--s2); color: var(--text); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.nav-circle:hover { border-color: var(--accent); color: var(--accent2); }
+.nav-circle:disabled { opacity: 0.3; cursor: default; }
+.know-row { display: flex; gap: 10px; }
+.kbtn-yes { padding: 10px 22px; border-radius: 22px; border: none; background: var(--green); color: #0c0f1a; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: opacity .2s; }
+.kbtn-no { padding: 10px 22px; border-radius: 22px; border: none; background: var(--red); color: #fff; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: opacity .2s; }
+.kbtn-yes:hover, .kbtn-no:hover { opacity: .82; }
 
-  .quiz-result { text-align: center; padding: 48px 20px; }
-  .result-score { font-size: 4rem; font-weight: 900; color: var(--accent2); }
-  .result-label { font-size: 1.2rem; color: var(--muted); margin: 8px 0 24px; }
-  .result-ring { width: 130px; height: 130px; border-radius: 50%; border: 8px solid var(--border); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; position: relative; }
+.stat-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.spill { background: var(--s2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 0.8rem; color: var(--muted); }
+.spill b { font-weight: 800; }
+.spill.g b { color: var(--green); }
+.spill.r b { color: var(--red); }
 
-  /* SEARCH */
-  .search-box { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0 14px; margin-bottom: 20px; max-width: 380px; }
-  .search-box input { background: none; border: none; color: var(--text); font-size: 0.95rem; padding: 11px 0; outline: none; flex: 1; }
-  .search-box svg { color: var(--muted); flex-shrink: 0; }
+/* ── QUIZ ── */
+.quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 10px; }
+.qmode-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.qmode { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--s2); color: var(--muted); font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+.qmode.active { border-color: var(--accent); color: var(--accent2); background: rgba(91,141,238,.15); }
+.pbar { background: var(--s3); border-radius: 10px; height: 5px; margin-bottom: 22px; }
+.pfill { background: linear-gradient(90deg, var(--accent), var(--purple)); height: 100%; border-radius: 10px; transition: width .4s; }
+.q-box { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r); padding: 26px; margin-bottom: 18px; }
+.q-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; font-weight: 700; }
+.q-txt { font-size: 1.2rem; font-weight: 800; color: var(--text); line-height: 1.4; }
+.q-hint { font-size: 0.82rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+.q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+@media(max-width:500px){ .q-opts { grid-template-columns: 1fr; } }
+.opt { background: var(--s2); border: 2px solid var(--border); border-radius: 10px; padding: 13px 16px; cursor: pointer; font-size: 0.9rem; color: var(--text); text-align: left; transition: all .18s; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--s3); }
+.opt.correct { border-color: var(--green); background: rgba(52,211,153,.12); color: var(--green); }
+.opt.wrong { border-color: var(--red); background: rgba(248,113,113,.1); color: var(--red); }
+.opt:disabled { cursor: default; }
+.fb { padding: 14px 18px; border-radius: 10px; font-size: 0.87rem; display: none; margin-bottom: 16px; }
+.fb.show { display: block; }
+.fb.ok { border-left: 4px solid var(--green); background: rgba(52,211,153,.08); }
+.fb.err { border-left: 4px solid var(--red); background: rgba(248,113,113,.07); }
+.q-next-row { display: flex; justify-content: flex-end; }
 
-  /* MODE SELECT */
-  .mode-select { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-  .mode-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 0.82rem; cursor: pointer; transition: all .2s; }
-  .mode-btn.active { border-color: var(--accent); color: var(--accent2); background: rgba(99,102,241,.15); }
+/* RESULT */
+.result-wrap { text-align: center; padding: 48px 20px; }
+.result-ring { width: 120px; height: 120px; border-radius: 50%; border: 8px solid var(--border); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 900; }
+.result-big { font-size: 3.5rem; font-weight: 900; color: var(--accent2); }
+.result-sub { font-size: 1.1rem; color: var(--muted); margin: 8px 0 28px; }
+.result-acts { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* PHRASES PANEL */
+.phrase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.pcard { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; transition: border-color .2s; }
+.pcard:hover { border-color: var(--purple); }
+.pcard-en { font-size: 1rem; font-weight: 800; color: var(--accent2); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.pcard-vi { font-size: 0.9rem; color: var(--text); margin-bottom: 8px; }
+.pcard-note { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+
+/* SECTION HEADERS */
+.sec-head { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* COUNTS */
+.count-badge { background: var(--s3); border-radius: 5px; padding: 2px 8px; font-size: 0.72rem; color: var(--muted); font-weight: 700; margin-left: 6px; }
 </style>
 </head>
 <body>
 
-<header>
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-  <h1>Vocabulary – Payment Terms</h1>
-  <span>24 từ</span>
-</header>
-
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('list')">📋 Danh sách</div>
-  <div class="tab" onclick="switchTab('flash')">🃏 Flashcard</div>
-  <div class="tab" onclick="switchTab('quiz')">✏️ Trắc nghiệm</div>
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="logo">📚 Vocab<span>Pro</span></div>
+  <div class="nav-tabs">
+    <div class="ntab active" onclick="goTab('list')"><span class="ico">📋</span>Từ vựng</div>
+    <div class="ntab" onclick="goTab('phrase')"><span class="ico">💬</span>Cụm từ</div>
+    <div class="ntab" onclick="goTab('grammar')"><span class="ico">📐</span>Ngữ pháp</div>
+    <div class="ntab" onclick="goTab('flash')"><span class="ico">🃏</span>Flashcard</div>
+    <div class="ntab" onclick="goTab('quiz')"><span class="ico">✏️</span>Trắc nghiệm</div>
+  </div>
 </div>
 
-<!-- ═══════════ WORD LIST ═══════════ -->
-<div id="tab-list" class="panel active">
-  <div class="search-box">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input id="search" placeholder="Tìm từ vựng..." oninput="filterWords(this.value)">
+<!-- ── LESSON BAR ── -->
+<div class="lesson-bar" id="lesson-bar">
+  <span>Bài học:</span>
+  <button class="lbtn all active" id="lb-all" onclick="setLesson('all')">🎯 Tất cả</button>
+  <button class="lbtn" id="lb-1" onclick="setLesson('1')">🟣 Bài 1 – Grammar & Opinion</button>
+  <button class="lbtn" id="lb-2" onclick="setLesson('2')">🟢 Bài 2 – Payment Terms</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 1: WORD LIST
+════════════════════════════════════════════ -->
+<div class="panel active" id="tab-list">
+  <div class="top-row">
+    <div class="search-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input placeholder="Tìm từ vựng hoặc nghĩa..." oninput="filterList(this.value)" id="search-inp">
+    </div>
+    <div class="tag-filter" id="pos-filter">
+      <div class="tag active" onclick="setPOS('all',this)">Tất cả</div>
+      <div class="tag" onclick="setPOS('n.',this)">Danh từ</div>
+      <div class="tag" onclick="setPOS('v.',this)">Động từ</div>
+      <div class="tag" onclick="setPOS('adj.',this)">Tính từ</div>
+      <div class="tag" onclick="setPOS('phrase',this)">Cụm từ</div>
+    </div>
   </div>
   <div class="word-grid" id="word-grid"></div>
 </div>
 
-<!-- ═══════════ FLASHCARD ═══════════ -->
-<div id="tab-flash" class="panel">
-  <div class="fc-header">
-    <div class="fc-progress" id="fc-progress">Thẻ 1 / 24</div>
-    <div class="fc-controls">
-      <button class="btn" onclick="shuffleFlash()">🔀 Xáo trộn</button>
-      <button class="btn" onclick="resetFlash()">↺ Reset</button>
-    </div>
-  </div>
+<!-- ══════════════════════════════════════════
+     PANEL 2: PHRASES
+════════════════════════════════════════════ -->
+<div class="panel" id="tab-phrase">
+  <div class="sec-head">Cụm từ & Idioms – Bài 1: Đồng ý / Không đồng ý</div>
+  <div class="phrase-grid" id="phrases-l1"></div>
+  <div class="sec-head">Cụm từ giao tiếp – Bài 2: Payment Terms</div>
+  <div class="phrase-grid" id="phrases-l2"></div>
+</div>
 
-  <div class="fc-scene" id="fc-scene" onclick="flipCard()">
-    <div class="fc-inner" id="fc-inner">
-      <div class="fc-face fc-front">
-        <div class="fc-pos" id="fc-pos-f"></div>
-        <div class="fc-word" id="fc-word"></div>
-        <button class="audio-btn" style="font-size:1.5rem;margin-top:8px" onclick="event.stopPropagation();speakWord(currentFC().word)" title="Nghe phát âm">🔊</button>
-        <div class="fc-hint">Nhấp để xem nghĩa</div>
+<!-- ══════════════════════════════════════════
+     PANEL 3: GRAMMAR
+════════════════════════════════════════════ -->
+<div class="panel" id="tab-grammar">
+  <div class="grammar-grid" id="grammar-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 4: FLASHCARD
+════════════════════════════════════════════ -->
+<div class="panel" id="tab-flash">
+  <div class="fc-wrap">
+    <div class="fc-header">
+      <div class="fc-prog" id="fc-prog">Thẻ 1 / ?</div>
+      <div class="fc-btns">
+        <button class="btn" onclick="shuffleFC()">🔀 Xáo trộn</button>
+        <button class="btn" onclick="resetFC()">↺ Reset</button>
       </div>
-      <div class="fc-face fc-back">
-        <div class="fc-pos" id="fc-pos-b"></div>
-        <div class="fc-meaning" id="fc-meaning"></div>
-        <div class="fc-example" id="fc-example"></div>
+    </div>
+    <div class="fc-scene" onclick="flipFC()">
+      <div class="fc-inner" id="fc-inner">
+        <div class="fc-face fc-front">
+          <div class="fc-lesson-badge" id="fc-badge-f"></div>
+          <div class="fc-type" id="fc-type-f">TỪ VỰNG</div>
+          <div class="fc-main" id="fc-main"></div>
+          <div class="fc-sub" id="fc-sub-f"></div>
+          <button class="abtn" style="font-size:1.4rem;margin-top:8px" onclick="event.stopPropagation();speakW(curFC().word)" title="Nghe">🔊</button>
+          <div class="fc-flip-hint">Nhấp để lật xem nghĩa ↻</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-lesson-badge" id="fc-badge-b"></div>
+          <div class="fc-answer" id="fc-answer"></div>
+          <div class="fc-ex" id="fc-ex"></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="fc-nav">
-    <button class="nav-btn" id="btn-prev" onclick="moveFC(-1)">‹</button>
-    <div class="know-btns" id="know-btns">
-      <button class="know-no" onclick="markFC(false)">✗ Chưa nhớ</button>
-      <button class="know-yes" onclick="markFC(true)">✓ Đã nhớ</button>
+    <div class="fc-nav">
+      <button class="nav-circle" id="fc-prev" onclick="moveFC(-1)">‹</button>
+      <div class="know-row">
+        <button class="kbtn-no" onclick="markFC(false)">✗ Chưa nhớ</button>
+        <button class="kbtn-yes" onclick="markFC(true)">✓ Đã nhớ</button>
+      </div>
+      <button class="nav-circle" id="fc-next" onclick="moveFC(1)">›</button>
     </div>
-    <button class="nav-btn" id="btn-next" onclick="moveFC(1)">›</button>
-  </div>
-
-  <div class="fc-stats">
-    <div class="stat-pill green">✓ Đã nhớ: <span id="stat-know">0</span></div>
-    <div class="stat-pill red">✗ Chưa nhớ: <span id="stat-unknow">0</span></div>
-    <div class="stat-pill">Còn lại: <span id="stat-left">24</span></div>
+    <div class="stat-row">
+      <div class="spill g">✓ Đã nhớ: <b id="st-k">0</b></div>
+      <div class="spill r">✗ Chưa nhớ: <b id="st-u">0</b></div>
+      <div class="spill">Còn lại: <b id="st-l">0</b></div>
+    </div>
   </div>
 </div>
 
-<!-- ═══════════ QUIZ ═══════════ -->
-<div id="tab-quiz" class="panel">
-  <div id="quiz-main">
-    <div class="mode-select">
-      <span style="font-size:.82rem;color:var(--muted);line-height:2">Dạng câu hỏi:</span>
-      <button class="mode-btn active" id="mode-en" onclick="setMode('en-vi')">Anh → Việt</button>
-      <button class="mode-btn" id="mode-vi" onclick="setMode('vi-en')">Việt → Anh</button>
-      <button class="mode-btn" id="mode-ex" onclick="setMode('example')">Điền vào câu</button>
-      <button class="mode-btn" id="mode-mix" onclick="setMode('mix')">🎲 Hỗn hợp</button>
+<!-- ══════════════════════════════════════════
+     PANEL 5: QUIZ
+════════════════════════════════════════════ -->
+<div class="panel" id="tab-quiz">
+  <div id="quiz-body">
+    <div class="qmode-row">
+      <span style="font-size:.78rem;color:var(--muted);line-height:2.2">Dạng:</span>
+      <button class="qmode active" id="qm-en" onclick="setQMode('en-vi')">Anh → Việt</button>
+      <button class="qmode" id="qm-vi" onclick="setQMode('vi-en')">Việt → Anh</button>
+      <button class="qmode" id="qm-ex" onclick="setQMode('fill')">Điền câu</button>
+      <button class="qmode" id="qm-ph" onclick="setQMode('phrase')">Cụm từ</button>
+      <button class="qmode" id="qm-mx" onclick="setQMode('mix')">🎲 Hỗn hợp</button>
     </div>
-    <div class="quiz-header">
-      <span id="q-num" style="font-size:.9rem;color:var(--muted)">Câu 1 / 24</span>
-      <span class="quiz-score">✅ <span id="q-correct">0</span> &nbsp;❌ <span id="q-wrong">0</span></span>
+    <div class="quiz-top">
+      <span style="font-size:.85rem;color:var(--muted)" id="q-num">Câu 1</span>
+      <span style="font-size:.85rem;color:var(--muted)">✅ <span id="q-c">0</span> &nbsp;❌ <span id="q-w">0</span></span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:0%"></div></div>
-    <div class="quiz-question">
-      <div class="q-label" id="q-label">Từ tiếng Anh có nghĩa là gì?</div>
-      <div class="q-text" id="q-text"></div>
-      <div class="q-sub" id="q-sub"></div>
+    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+    <div class="q-box">
+      <div class="q-label" id="q-lbl"></div>
+      <div class="q-txt" id="q-txt"></div>
+      <div class="q-hint" id="q-hint"></div>
     </div>
-    <div class="quiz-options" id="q-options"></div>
-    <div class="quiz-feedback" id="q-feedback"></div>
-    <div style="display:flex;justify-content:flex-end;margin-top:16px">
-      <button class="btn btn-accent" id="btn-next-q" onclick="nextQuestion()" style="display:none">Câu tiếp ›</button>
+    <div class="q-opts" id="q-opts"></div>
+    <div class="fb" id="q-fb"></div>
+    <div class="q-next-row">
+      <button class="btn btn-a" id="q-next-btn" onclick="nextQ()" style="display:none">Câu tiếp ›</button>
     </div>
   </div>
-  <div id="quiz-result" style="display:none" class="quiz-result">
-    <div class="result-ring" id="result-ring"></div>
-    <div class="result-score" id="result-score"></div>
-    <div class="result-label" id="result-label"></div>
-    <button class="btn btn-accent" onclick="startQuiz()" style="margin:8px">↺ Làm lại</button>
-    <button class="btn" onclick="setMode(quizMode);startQuiz()" style="margin:8px">🔀 Trộn lại</button>
+  <div class="result-wrap" id="quiz-result" style="display:none">
+    <div class="result-ring" id="res-ring"></div>
+    <div class="result-big" id="res-big"></div>
+    <div class="result-sub" id="res-sub"></div>
+    <div class="result-acts">
+      <button class="btn btn-a" onclick="startQuiz()">↺ Làm lại</button>
+      <button class="btn" onclick="shuffleAndStart()">🔀 Trộn lại</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────
-const vocab = [
-  { word:"customer",      pos:"n.",       meaning:"khách hàng",             example:"The customer is waiting for the invoice." },
-  { word:"latest",        pos:"adj.",     meaning:"mới nhất",               example:"We discussed the latest order." },
-  { word:"several",       pos:"adj.",     meaning:"một vài, nhiều",         example:"The drought lasted several months." },
-  { word:"drought",       pos:"n.",       meaning:"hạn hán",                example:"The drought damaged crops." },
-  { word:"flood",         pos:"n.",       meaning:"lũ lụt",                 example:"The flood blocked the roads." },
-  { word:"thunder",       pos:"n.",       meaning:"sấm",                    example:"I heard thunder last night." },
-  { word:"storm",         pos:"n.",       meaning:"cơn bão",                example:"The storm delayed the shipment." },
-  { word:"tsunami",       pos:"n.",       meaning:"sóng thần",              example:"The tsunami hit the coast." },
-  { word:"pandemic",      pos:"n.",       meaning:"đại dịch",               example:"The COVID-19 pandemic affected trade." },
-  { word:"transmission",  pos:"n.",       meaning:"sự lây truyền",          example:"The transmission of the virus was rapid." },
-  { word:"last",          pos:"adj./v.",  meaning:"trước; kéo dài",         example:"The festival will last for 10 days." },
-  { word:"order",         pos:"n./v.",    meaning:"đơn hàng; đặt hàng",     example:"We placed another order." },
-  { word:"regulation",    pos:"n.",       meaning:"quy định",               example:"We must follow the regulations." },
-  { word:"cash flow",     pos:"n.",       meaning:"dòng tiền",              example:"The company has cash flow problems." },
-  { word:"ability",       pos:"n.",       meaning:"khả năng",               example:"She has the ability to solve problems." },
-  { word:"deliver",       pos:"v.",       meaning:"giao hàng",              example:"They deliver goods on time." },
-  { word:"solve",         pos:"v.",       meaning:"giải quyết",             example:"We solved the issue quickly." },
-  { word:"appreciate",    pos:"v.",       meaning:"đánh giá cao, cảm kích", example:"We appreciate your business." },
-  { word:"issue",         pos:"n.",       meaning:"vấn đề",                 example:"There is no issue with the order." },
-  { word:"invoice",       pos:"n.",       meaning:"hóa đơn",               example:"Please check the invoice." },
-  { word:"payment terms", pos:"n.",       meaning:"điều khoản thanh toán",  example:"We agreed to 30-day payment terms." },
-  { word:"extension",     pos:"n.",       meaning:"gia hạn",               example:"They requested an extension." },
-  { word:"exception",     pos:"n.",       meaning:"ngoại lệ",              example:"We can make an exception this time." },
-  { word:"confirmation",  pos:"n.",       meaning:"xác nhận",              example:"I received the email confirmation." }
+// ═══════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════
+const VOCAB = [
+  // ── Bài 1 ──────────────────────────────────
+  { w:"executive",      pos:"n.",      vi:"người quản lý / CEO",              ex:"The CEO is the chief executive of the company.",           lesson:1 },
+  { w:"requirement",    pos:"n.",      vi:"yêu cầu, sự yêu cầu",             ex:"Meeting the requirement is essential for the job.",        lesson:1, note:"require (v) → requirement (n)" },
+  { w:"assistant",      pos:"n.",      vi:"người trợ lý",                    ex:"The executive's assistant manages his schedule.",          lesson:1, note:"assist (v) → assistance (n)" },
+  { w:"assistance",     pos:"n.",      vi:"sự hỗ trợ, sự trợ giúp",         ex:"She offered her assistance without hesitation.",           lesson:1 },
+  { w:"run errands",    pos:"phrase",  vi:"làm việc lặt vặt",                ex:"She had to run errands all morning for her boss.",          lesson:1, note:"≠ menial tasks / odd jobs (không dùng với 'run')" },
+  { w:"laundry",        pos:"n.",      vi:"việc giặt giũ",                   ex:"He did the laundry every Sunday morning.",                 lesson:1, note:"laundry detergent = bột giặt / nước giặt" },
+  { w:"gig economy",    pos:"phrase",  vi:"nền kinh tế Gig",                 ex:"Many young people work in the gig economy.",               lesson:1 },
+  { w:"economist",      pos:"n.",      vi:"nhà kinh tế học",                 ex:"The economist predicted a recession next year.",           lesson:1, note:"economics (môn học) → economical (adj: tiết kiệm)" },
+  { w:"economical",     pos:"adj.",    vi:"tiết kiệm",                       ex:"This car is very economical on fuel.",                     lesson:1 },
+  { w:"derivative",     pos:"adj.",    vi:"không nguyên bản, phái sinh",     ex:"Critics said his style was too derivative.",               lesson:1 },
+  { w:"uninspired",     pos:"adj.",    vi:"tầm thường, tẻ nhạt",             ex:"The film felt completely uninspired and boring.",          lesson:1, note:"inspire (v) → inspiration (n)" },
+  { w:"inspiration",    pos:"n.",      vi:"nguồn cảm hứng",                  ex:"Nature is her greatest source of inspiration.",            lesson:1 },
+  { w:"rely on",        pos:"phrase",  vi:"dựa vào",                         ex:"Don't rely on others to solve your problems.",             lesson:1, note:"heavily rely on = dựa vào một cách nặng nề" },
+  { w:"out-of-fashion", pos:"adj.",    vi:"lỗi mốt, hết thời",              ex:"That sound is completely out-of-fashion now.",             lesson:1 },
+  { w:"inspect",        pos:"v.",      vi:"kiểm tra kỹ, giám sát",           ex:"Officials inspect the factory every quarter.",             lesson:1, note:"inspection (n)" },
+  { w:"suspicious",     pos:"adj.",    vi:"hoài nghi, nghi ngờ",             ex:"She gave him a suspicious look.",                         lesson:1, note:"suspect (v/n) → suspicious (adj)" },
+  { w:"survive",        pos:"v.",      vi:"sinh tồn, sống sót",              ex:"Only the strongest survive in nature.",                    lesson:1, note:"survival (n)" },
+  { w:"victim",         pos:"n.",      vi:"nạn nhân",                        ex:"The victim was taken to hospital immediately.",            lesson:1 },
+  { w:"eyewitness",     pos:"n.",      vi:"nhân chứng",                      ex:"The eyewitness described the suspect clearly.",           lesson:1 },
+  { w:"completely",     pos:"adv.",    vi:"hoàn toàn",                       ex:"I completely agree with your opinion.",                    lesson:1, note:"complete (v) = hoàn thành" },
+  // ── Bài 2 ──────────────────────────────────
+  { w:"customer",       pos:"n.",      vi:"khách hàng",                      ex:"The customer is waiting for the invoice.",                 lesson:2 },
+  { w:"latest",         pos:"adj.",    vi:"mới nhất",                        ex:"We discussed the latest order.",                          lesson:2 },
+  { w:"several",        pos:"adj.",    vi:"một vài, nhiều",                  ex:"The drought lasted several months.",                      lesson:2 },
+  { w:"drought",        pos:"n.",      vi:"hạn hán",                         ex:"The drought damaged crops across the region.",             lesson:2 },
+  { w:"flood",          pos:"n.",      vi:"lũ lụt",                          ex:"The flood blocked the roads for days.",                    lesson:2 },
+  { w:"tsunami",        pos:"n.",      vi:"sóng thần",                       ex:"The tsunami hit the coast without warning.",               lesson:2 },
+  { w:"pandemic",       pos:"n.",      vi:"đại dịch",                        ex:"The COVID-19 pandemic affected global trade.",             lesson:2 },
+  { w:"transmission",   pos:"n.",      vi:"sự lây truyền, sự truyền",        ex:"The transmission of the virus was very rapid.",            lesson:2 },
+  { w:"regulation",     pos:"n.",      vi:"quy định",                        ex:"We must follow all financial regulations.",                lesson:2 },
+  { w:"cash flow",      pos:"n.",      vi:"dòng tiền",                       ex:"The company is facing serious cash flow problems.",        lesson:2 },
+  { w:"ability",        pos:"n.",      vi:"năng lực, khả năng",              ex:"She has the ability to solve complex problems.",           lesson:2 },
+  { w:"deliver",        pos:"v.",      vi:"giao hàng",                       ex:"They deliver goods on time every week.",                   lesson:2 },
+  { w:"solve",          pos:"v.",      vi:"giải quyết",                      ex:"We solved the cash flow issue quickly.",                   lesson:2 },
+  { w:"appreciate",     pos:"v.",      vi:"đánh giá cao, cảm kích",          ex:"We really appreciate your patience.",                     lesson:2 },
+  { w:"invoice",        pos:"n.",      vi:"hóa đơn",                         ex:"Please check the invoice before paying.",                  lesson:2 },
+  { w:"payment terms",  pos:"n.",      vi:"điều khoản thanh toán",           ex:"We agreed to 30-day payment terms.",                      lesson:2 },
+  { w:"extension",      pos:"n.",      vi:"gia hạn",                         ex:"They requested a payment extension of 30 days.",          lesson:2 },
+  { w:"exception",      pos:"n.",      vi:"ngoại lệ",                        ex:"We can make an exception this time.",                     lesson:2 },
+  { w:"confirmation",   pos:"n.",      vi:"xác nhận",                        ex:"Please send an email confirmation.",                      lesson:2 },
+  { w:"place an order", pos:"phrase",  vi:"đặt đơn hàng",                   ex:"We'd like to place another order today.",                  lesson:2 },
 ];
 
-// ── UTILS ─────────────────────────────────────────────────────────
-function shuffle(arr) {
-  let a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+const PHRASES = [
+  // Bài 1 – Opinion / Agreement
+  { en:"My thoughts exactly",    vi:"Tôi cũng nghĩ vậy",                           note:"Dùng khi đồng ý hoàn toàn với ai đó",                    lesson:1 },
+  { en:"I beg to differ",         vi:"Tôi có quan điểm khác / Tôi không đồng ý",   note:"Lịch sự hơn 'I disagree'",                               lesson:1 },
+  { en:"That's a bit of a stretch", vi:"Nói vậy thì hơi quá / hơi khiên cưỡng",   note:"Dùng khi ai đó nói điều hơi cường điệu",                 lesson:1 },
+  { en:"agree to disagree",       vi:"Đồng ý là chúng ta có ý kiến khác nhau",     note:"Chấp nhận bất đồng mà không ai thắng cuộc",              lesson:1 },
+  { en:"all sorts of",            vi:"tất cả các loại…",                            note:"all sorts of + N (danh từ số nhiều)",                     lesson:1 },
+  { en:"heavily rely on",         vi:"dựa vào một cách nặng nề",                   note:"heavily (adv) bổ nghĩa cho động từ rely",                lesson:1 },
+  // Bài 2 – Business
+  { en:"I need a favour",                   vi:"Tôi muốn nhờ bạn một việc",              note:"Cách mở đầu lịch sự khi nhờ vả",                        lesson:2 },
+  { en:"You'd really be helping us out if…", vi:"Bạn sẽ giúp chúng tôi rất nhiều nếu…", note:"Cấu trúc lịch sự để đề nghị",                           lesson:2 },
+  { en:"I promise this won't become the norm", vi:"Tôi hứa đây sẽ không trở thành thông lệ", note:"Dùng khi xin ngoại lệ một lần",                  lesson:2 },
+  { en:"Let me see what I can do",          vi:"Để tôi xem tôi có thể giúp được gì",     note:"Phản hồi lịch sự khi được nhờ",                         lesson:2 },
+  { en:"We can make an exception this time", vi:"Lần này chúng tôi có thể chấp nhận ngoại lệ", note:"",                                              lesson:2 },
+  { en:"We appreciate your business",       vi:"Chúng tôi trân trọng việc hợp tác với bạn", note:"Câu kết thúc chuyên nghiệp",                       lesson:2 },
+  { en:"It works both ways",                vi:"Điều đó có lợi cho cả hai bên",           note:"= win-win / đôi bên cùng có lợi",                       lesson:2 },
+  { en:"I'll keep an eye out for it",       vi:"Tôi sẽ để ý / chờ nhận email đó",         note:"Dùng khi hứa chú ý theo dõi điều gì",                  lesson:2 },
+];
+
+const GRAMMAR = [
+  {
+    title:"Câu điều kiện loại 0",
+    badge:"Type 0",
+    formula:"If + S + <strong>V (hiện tại)</strong>, S + <strong>V (hiện tại)</strong>",
+    function:"Diễn tả sự thật hiển nhiên, quy luật khoa học",
+    examples:["If water reaches 100°C, it boils.", "If you mix red and blue, you get purple."],
+    note:""
+  },
+  {
+    title:"Câu điều kiện loại 1",
+    badge:"Type 1",
+    formula:"If + S + <strong>V (hiện tại)</strong>, S + <strong>will + V</strong>",
+    function:"Giả định có thể xảy ra ở hiện tại / tương lai",
+    examples:["If it rains, we will cancel the trip.", "If you study hard, you will pass."],
+    note:""
+  },
+  {
+    title:"Câu điều kiện loại 2",
+    badge:"Type 2",
+    formula:"If + S + <strong>V (quá khứ)</strong>, S + <strong>would + V</strong>",
+    function:"Giả định không có thật ở hiện tại",
+    examples:["If I were rich, I would travel the world.", "If she knew the answer, she would tell you."],
+    note:"Dùng 'were' cho mọi chủ ngữ (chuẩn văn phong)"
+  },
+  {
+    title:"Câu điều kiện loại 3",
+    badge:"Type 3",
+    formula:"If + S + <strong>had V3</strong>, S + <strong>would have V3</strong>",
+    function:"Giả định không có thật trong quá khứ — thể hiện sự nuối tiếc",
+    examples:["If I had studied harder, I would have passed the exam.", "If she had left earlier, she would not have missed the bus."],
+    note:""
+  },
+  {
+    title:"Đảo ngữ – Loại 3",
+    badge:"Inversion",
+    formula:"<strong>Had</strong> + S + V3, S + <strong>would have V3</strong>",
+    function:"Bỏ 'If', đảo 'Had' lên đầu để nhấn mạnh",
+    examples:["Had there not been a medic present, the victim would not have survived.", "Had she left earlier, she wouldn't have been late."],
+    note:"Câu gốc: If there had not been a medic present → Đảo: Had there not been a medic present"
+  },
+  {
+    title:"Subjunctive – require that",
+    badge:"Subjunctive",
+    formula:"require <strong>(that)</strong> + S + <strong>V nguyên mẫu</strong>",
+    function:"Sau 'require that', động từ ở dạng nguyên mẫu không chia",
+    examples:["The law requires that every factory have a safety inspection.", "She requires that he submit the report by Friday."],
+    note:"Không dùng 'to V' — dùng V nguyên mẫu: 'have', 'submit', 'be'..."
+  },
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let activeLesson = 'all';
+let activePOS = 'all';
+let activeTab = 'list';
+let searchQ = '';
+
+// FC
+let fcDeck = [], fcIdx = 0, fcKnow = 0, fcUnknow = 0;
+
+// Quiz
+let qMode = 'en-vi', qDeck = [], qIdx = 0, qCorrect = 0, qWrong = 0, qAnswered = false;
+let quizReady = false;
+
+// ═══════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════
+function shuffle(a){ let b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+function speakW(t){ if(!window.speechSynthesis)return; const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=0.85; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+function filteredVocab(){
+  return VOCAB.filter(v=>{
+    if(activeLesson!=='all' && v.lesson!=activeLesson) return false;
+    if(activePOS!=='all'){
+      if(activePOS==='phrase') return v.pos==='phrase';
+      if(!v.pos.startsWith(activePOS)) return false;
+    }
+    if(searchQ){
+      const q=searchQ.toLowerCase();
+      return v.w.toLowerCase().includes(q)||v.vi.toLowerCase().includes(q);
+    }
+    return true;
+  });
 }
-function speakWord(text) {
-  if (!window.speechSynthesis) return;
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = 0.85;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
-}
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i)=>{
-    const tabs=['list','flash','quiz'];
-    t.classList.toggle('active', tabs[i]===name);
+
+// ═══════════════════════════════════════════════
+//  TAB / LESSON
+// ═══════════════════════════════════════════════
+function goTab(name){
+  activeTab=name;
+  document.querySelectorAll('.ntab').forEach((t,i)=>{
+    t.classList.toggle('active',['list','phrase','grammar','flash','quiz'][i]===name);
   });
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  if (name==='flash') renderFC();
-  if (name==='quiz') { if (!quizStarted) startQuiz(); }
+  if(name==='list') renderList();
+  if(name==='flash'){ buildFC(); renderFC(); }
+  if(name==='quiz') { if(!quizReady) startQuiz(); }
+  if(name==='phrase') renderPhrases();
+  if(name==='grammar') renderGrammar();
+}
+function setLesson(l){
+  activeLesson=l;
+  ['all','1','2'].forEach(x=>{
+    document.getElementById('lb-'+x).classList.toggle('active',x===l);
+  });
+  if(activeTab==='list') renderList();
+  if(activeTab==='flash'){ buildFC(); renderFC(); }
+  if(activeTab==='quiz') startQuiz();
 }
 
-// ── WORD LIST ──────────────────────────────────────────────────────
-function renderWordList(list) {
-  const g = document.getElementById('word-grid');
-  g.innerHTML = list.map(v=>`
-    <div class="word-card">
-      <div class="word">
-        ${v.word}
-        <span class="pos">${v.pos}</span>
-        <button class="audio-btn" onclick="speakWord('${v.word}')" title="Nghe">🔊</button>
+// ═══════════════════════════════════════════════
+//  WORD LIST
+// ═══════════════════════════════════════════════
+function filterList(q){ searchQ=q; renderList(); }
+function setPOS(p,el){
+  activePOS=p;
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderList();
+}
+function renderList(){
+  const list=filteredVocab();
+  const g=document.getElementById('word-grid');
+  if(!list.length){ g.innerHTML='<div style="color:var(--muted);padding:20px;font-size:.9rem">Không tìm thấy từ nào.</div>'; return; }
+  g.innerHTML=list.map(v=>`
+    <div class="wcard">
+      <div class="wcard-top">
+        <div class="wcard-word">${v.w}</div>
+        ${v.pos!=='phrase'?`<span class="wcard-pos">${v.pos}</span>`:''}
+        <span class="wcard-lesson l${v.lesson}">Bài ${v.lesson}</span>
+        ${v.pos!=='phrase'?`<button class="abtn" onclick="speakW('${v.w.replace(/'/g,"\\'")}')">🔊</button>`:''}
       </div>
-      <div class="meaning">${v.meaning}</div>
-      <div class="example">${v.example}</div>
-    </div>
-  `).join('');
+      <div class="wcard-meaning">${v.vi}</div>
+      <div class="wcard-example">${v.ex}</div>
+      ${v.note?`<div class="wcard-note">💡 ${v.note}</div>`:''}
+    </div>`).join('');
 }
-function filterWords(q) {
-  const r = q.toLowerCase();
-  renderWordList(vocab.filter(v=> v.word.toLowerCase().includes(r) || v.meaning.includes(r)));
+renderList();
+
+// ═══════════════════════════════════════════════
+//  PHRASES
+// ═══════════════════════════════════════════════
+function renderPhrases(){
+  const render=(id,ls)=>{
+    const list=PHRASES.filter(p=>p.lesson===ls);
+    document.getElementById(id).innerHTML=list.map(p=>`
+      <div class="pcard">
+        <div class="pcard-en">
+          "${p.en}"
+          <button class="abtn" onclick="speakW('${p.en.replace(/'/g,"\\'")}')">🔊</button>
+        </div>
+        <div class="pcard-vi">→ ${p.vi}</div>
+        ${p.note?`<div class="pcard-note">💡 ${p.note}</div>`:''}
+      </div>`).join('');
+  };
+  render('phrases-l1',1);
+  render('phrases-l2',2);
 }
-renderWordList(vocab);
 
-// ── FLASHCARD ─────────────────────────────────────────────────────
-let fcDeck = [...vocab];
-let fcIdx = 0;
-let fcKnow = 0, fcUnknow = 0;
+// ═══════════════════════════════════════════════
+//  GRAMMAR
+// ═══════════════════════════════════════════════
+function renderGrammar(){
+  document.getElementById('grammar-grid').innerHTML=GRAMMAR.map(g=>`
+    <div class="gcard">
+      <h3>${g.title} <span class="badge">${g.badge}</span></h3>
+      <div class="formula">${g.formula}</div>
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">📌 ${g.function}</div>
+      <div class="example-box">${g.examples.map(e=>`• ${e}`).join('<br>')}</div>
+      ${g.note?`<div class="note">💡 ${g.note}</div>`:''}
+    </div>`).join('');
+}
 
-function currentFC() { return fcDeck[fcIdx]; }
-function renderFC() {
-  const v = currentFC();
-  document.getElementById('fc-word').textContent = v.word;
-  document.getElementById('fc-pos-f').textContent = v.pos;
-  document.getElementById('fc-pos-b').textContent = v.pos;
-  document.getElementById('fc-meaning').textContent = v.meaning;
-  document.getElementById('fc-example').textContent = v.example;
-  document.getElementById('fc-progress').textContent = `Thẻ ${fcIdx+1} / ${fcDeck.length}`;
+// ═══════════════════════════════════════════════
+//  FLASHCARD
+// ═══════════════════════════════════════════════
+function buildFC(){
+  let pool=VOCAB.filter(v=>activeLesson==='all'||v.lesson==activeLesson);
+  // Also add phrases to flashcard
+  const phraseCards=PHRASES
+    .filter(p=>activeLesson==='all'||p.lesson==activeLesson)
+    .map(p=>({w:p.en, pos:'phrase', vi:p.vi, ex:p.note||'', lesson:p.lesson, isPhrase:true}));
+  fcDeck=[...pool,...phraseCards];
+  fcIdx=0; fcKnow=0; fcUnknow=0;
+}
+function curFC(){ return fcDeck[fcIdx]; }
+function renderFC(){
+  if(!fcDeck.length) return;
+  const v=curFC();
+  const isPh=v.isPhrase;
+  document.getElementById('fc-main').textContent=v.w;
+  document.getElementById('fc-sub-f').textContent=isPh?'Cụm từ / Idiom':`(${v.pos})`;
+  document.getElementById('fc-type-f').textContent=isPh?'CỤM TỪ':'TỪ VỰNG';
+  document.getElementById('fc-answer').textContent=v.vi;
+  document.getElementById('fc-ex').textContent=v.ex;
+  const bl=`Bài ${v.lesson}`;
+  document.getElementById('fc-badge-f').textContent=bl;
+  document.getElementById('fc-badge-f').className=`fc-lesson-badge l${v.lesson}`;
+  document.getElementById('fc-badge-b').textContent=bl;
+  document.getElementById('fc-badge-b').className=`fc-lesson-badge l${v.lesson}`;
+  document.getElementById('fc-prog').textContent=`Thẻ ${fcIdx+1} / ${fcDeck.length}`;
   document.getElementById('fc-inner').classList.remove('flipped');
-  document.getElementById('btn-prev').disabled = fcIdx === 0;
-  document.getElementById('btn-next').disabled = fcIdx === fcDeck.length-1;
-  document.getElementById('stat-left').textContent = fcDeck.length - fcKnow - fcUnknow;
+  document.getElementById('fc-prev').disabled=fcIdx===0;
+  document.getElementById('fc-next').disabled=fcIdx===fcDeck.length-1;
+  document.getElementById('st-l').textContent=fcDeck.length-fcKnow-fcUnknow;
 }
-function flipCard() { document.getElementById('fc-inner').classList.toggle('flipped'); }
-function moveFC(d) { fcIdx = Math.max(0, Math.min(fcDeck.length-1, fcIdx+d)); renderFC(); }
-function shuffleFlash() { fcDeck = shuffle(vocab); fcIdx=0; fcKnow=0; fcUnknow=0; updateStats(); renderFC(); }
-function resetFlash() { fcDeck=[...vocab]; fcIdx=0; fcKnow=0; fcUnknow=0; updateStats(); renderFC(); }
-function markFC(known) {
-  if (known) fcKnow++; else fcUnknow++;
-  updateStats();
-  if (fcIdx < fcDeck.length-1) { fcIdx++; renderFC(); }
+function flipFC(){ document.getElementById('fc-inner').classList.toggle('flipped'); }
+function moveFC(d){ fcIdx=Math.max(0,Math.min(fcDeck.length-1,fcIdx+d)); renderFC(); }
+function markFC(k){ if(k)fcKnow++;else fcUnknow++; updateStats(); if(fcIdx<fcDeck.length-1){fcIdx++;renderFC();} }
+function updateStats(){
+  document.getElementById('st-k').textContent=fcKnow;
+  document.getElementById('st-u').textContent=fcUnknow;
+  document.getElementById('st-l').textContent=fcDeck.length-fcKnow-fcUnknow;
 }
-function updateStats() {
-  document.getElementById('stat-know').textContent = fcKnow;
-  document.getElementById('stat-unknow').textContent = fcUnknow;
-  document.getElementById('stat-left').textContent = fcDeck.length - fcKnow - fcUnknow;
-}
-renderFC();
+function shuffleFC(){ fcDeck=shuffle(fcDeck); fcIdx=0; fcKnow=0; fcUnknow=0; updateStats(); renderFC(); }
+function resetFC(){ buildFC(); updateStats(); renderFC(); }
 
-// ── QUIZ ──────────────────────────────────────────────────────────
-let quizMode = 'en-vi';
-let quizDeck = [];
-let qIdx = 0, qCorrect = 0, qWrong = 0;
-let quizStarted = false;
-let answered = false;
+// init FC
+buildFC(); renderFC();
 
-function setMode(m) {
-  quizMode = m;
-  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-  const map = {'en-vi':'mode-en','vi-en':'mode-vi','example':'mode-ex','mix':'mode-mix'};
-  document.getElementById(map[m]).classList.add('active');
+// ═══════════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════════
+const QMODE_MAP={'en-vi':'qm-en','vi-en':'qm-vi','fill':'qm-ex','phrase':'qm-ph','mix':'qm-mx'};
+function setQMode(m){
+  qMode=m;
+  Object.values(QMODE_MAP).forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(QMODE_MAP[m]).classList.add('active');
   startQuiz();
 }
-
-function startQuiz() {
-  quizDeck = shuffle(vocab);
-  qIdx = 0; qCorrect = 0; qWrong = 0;
-  answered = false;
-  quizStarted = true;
-  document.getElementById('quiz-main').style.display = '';
-  document.getElementById('quiz-result').style.display = 'none';
-  document.getElementById('q-feedback').className = 'quiz-feedback';
-  document.getElementById('btn-next-q').style.display = 'none';
-  renderQuestion();
-}
-
-function getMode() {
-  if (quizMode === 'mix') {
-    const modes = ['en-vi','vi-en','example'];
-    return modes[Math.floor(Math.random()*modes.length)];
+function startQuiz(){
+  quizReady=true;
+  // Build deck
+  let pool=VOCAB.filter(v=>activeLesson==='all'||v.lesson==activeLesson);
+  const phrasePool=PHRASES.filter(p=>activeLesson==='all'||p.lesson==activeLesson);
+  if(qMode==='phrase') qDeck=shuffle(phrasePool).map(p=>({type:'phrase',item:p}));
+  else if(qMode==='fill') qDeck=shuffle(pool.filter(v=>v.pos!=='phrase')).map(v=>({type:'fill',item:v}));
+  else if(qMode==='mix'){
+    const vCards=shuffle(pool).slice(0,Math.ceil(pool.length*.6)).map(v=>({type:Math.random()>.5?'en-vi':'vi-en',item:v}));
+    const pCards=shuffle(phrasePool).slice(0,Math.ceil(phrasePool.length*.4)).map(p=>({type:'phrase',item:p}));
+    qDeck=shuffle([...vCards,...pCards]);
   }
-  return quizMode;
+  else qDeck=shuffle(pool).map(v=>({type:qMode,item:v}));
+  qIdx=0; qCorrect=0; qWrong=0; qAnswered=false;
+  document.getElementById('quiz-body').style.display='';
+  document.getElementById('quiz-result').style.display='none';
+  renderQ();
 }
+function shuffleAndStart(){ qDeck=shuffle(qDeck); qIdx=0; qCorrect=0; qWrong=0; qAnswered=false; document.getElementById('quiz-body').style.display=''; document.getElementById('quiz-result').style.display='none'; renderQ(); }
 
-function renderQuestion() {
-  answered = false;
-  const v = quizDeck[qIdx];
-  const mode = getMode();
-  document.getElementById('q-feedback').className = 'quiz-feedback';
-  document.getElementById('btn-next-q').style.display = 'none';
+function renderQ(){
+  qAnswered=false;
+  document.getElementById('q-fb').className='fb';
+  document.getElementById('q-next-btn').style.display='none';
+  const total=qDeck.length;
+  document.getElementById('q-num').textContent=`Câu ${qIdx+1} / ${total}`;
+  document.getElementById('q-c').textContent=qCorrect;
+  document.getElementById('q-w').textContent=qWrong;
+  document.getElementById('pfill').style.width=`${(qIdx/total)*100}%`;
 
-  const total = quizDeck.length;
-  document.getElementById('q-num').textContent = `Câu ${qIdx+1} / ${total}`;
-  document.getElementById('q-correct').textContent = qCorrect;
-  document.getElementById('q-wrong').textContent = qWrong;
-  document.getElementById('q-progress').style.width = `${(qIdx/total)*100}%`;
+  const {type,item}=qDeck[qIdx];
+  let label, txt, hint, correct, opts;
 
-  let qText, qSub, qLabel, correctAns, opts;
-
-  if (mode === 'en-vi') {
-    qLabel = 'Từ tiếng Anh có nghĩa là gì?';
-    qText = v.word + ' &nbsp;<button class="audio-btn" onclick="speakWord(\'' + v.word + '\')" style="font-size:1.1rem">🔊</button>';
-    qSub = `(${v.pos})`;
-    correctAns = v.meaning;
-    opts = getOpts4('meaning', v);
-  } else if (mode === 'vi-en') {
-    qLabel = 'Từ tiếng Việt dịch sang tiếng Anh là gì?';
-    qText = v.meaning;
-    qSub = `(${v.pos})`;
-    correctAns = v.word;
-    opts = getOpts4('word', v);
+  if(type==='en-vi'){
+    label='Từ tiếng Anh có nghĩa là gì?';
+    txt=`${item.w} <button class="abtn" onclick="speakW('${item.w.replace(/'/g,"\\'")}')">🔊</button>`;
+    hint=`(${item.pos})`;
+    correct=item.vi;
+    opts=getOpts(VOCAB.filter(v=>v.lesson===(activeLesson==='all'?v.lesson:Number(activeLesson))), 'vi', item.vi);
+  } else if(type==='vi-en'){
+    label='Từ tiếng Việt dịch sang tiếng Anh là gì?';
+    txt=item.vi;
+    hint=`(${item.pos})`;
+    correct=item.w;
+    opts=getOpts(VOCAB.filter(v=>v.lesson===(activeLesson==='all'?v.lesson:Number(activeLesson))), 'w', item.w);
+  } else if(type==='fill'){
+    label='Chọn từ đúng để hoàn thành câu:';
+    const blank=item.ex.replace(new RegExp(item.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i'),'_____');
+    txt=blank;
+    hint=`Gợi ý nghĩa: ${item.vi}`;
+    correct=item.w;
+    opts=getOpts(VOCAB.filter(v=>v.pos===item.pos&&v.w!==item.w),'w',item.w);
+    if(!opts.includes(item.w)) opts[0]=item.w;
   } else {
-    // fill-in example
-    qLabel = 'Chọn từ đúng để hoàn thành câu:';
-    const blank = v.example.replace(new RegExp(v.word, 'i'), '_____');
-    qText = blank;
-    qSub = `Gợi ý: ${v.meaning}`;
-    correctAns = v.word;
-    opts = getOpts4('word', v);
+    // phrase
+    label='Cụm từ tiếng Anh này nghĩa là gì?';
+    txt=`"${item.en}" <button class="abtn" onclick="speakW('${item.en.replace(/'/g,"\\'")}')">🔊</button>`;
+    hint='';
+    correct=item.vi;
+    const decoys=PHRASES.filter(p=>p.vi!==item.vi);
+    const d3=shuffle(decoys).slice(0,3).map(p=>p.vi);
+    opts=shuffle([item.vi,...d3]);
   }
 
-  document.getElementById('q-label').textContent = qLabel;
-  document.getElementById('q-text').innerHTML = qText;
-  document.getElementById('q-sub').textContent = qSub;
+  document.getElementById('q-lbl').textContent=label;
+  document.getElementById('q-txt').innerHTML=txt;
+  document.getElementById('q-hint').textContent=hint;
 
-  const container = document.getElementById('q-options');
-  container.innerHTML = '';
-  const shuffledOpts = shuffle(opts);
-  shuffledOpts.forEach(o => {
-    const btn = document.createElement('button');
-    btn.className = 'opt';
-    btn.textContent = o;
-    btn.onclick = () => checkAnswer(btn, o, correctAns, v);
-    container.appendChild(btn);
+  const container=document.getElementById('q-opts');
+  container.innerHTML='';
+  const shuf=shuffle(opts);
+  shuf.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.textContent=o;
+    b.onclick=()=>checkQ(b,o,correct,item,type);
+    container.appendChild(b);
   });
 }
 
-function getOpts4(field, v) {
-  const correct = v[field];
-  const others = shuffle(vocab.filter(x=>x[field]!==correct)).slice(0,3).map(x=>x[field]);
-  return [correct, ...others];
+function getOpts(pool, field, correct){
+  const others=shuffle(pool.filter(v=>v[field]&&v[field]!==correct)).slice(0,3).map(v=>v[field]);
+  const all=[correct,...others];
+  while(all.length<4) all.push('—');
+  return all;
 }
 
-function checkAnswer(btn, chosen, correct, v) {
-  if (answered) return;
-  answered = true;
-  const opts = document.querySelectorAll('.opt');
-  opts.forEach(o => {
-    o.disabled = true;
-    if (o.textContent === correct) o.classList.add('correct');
-  });
-  const fb = document.getElementById('q-feedback');
-  if (chosen === correct) {
+function checkQ(btn, chosen, correct, item, type){
+  if(qAnswered) return;
+  qAnswered=true;
+  document.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; if(o.textContent===correct) o.classList.add('correct'); });
+  const fb=document.getElementById('q-fb');
+  if(chosen===correct){
     btn.classList.add('correct');
     qCorrect++;
-    fb.className = 'quiz-feedback show ok';
-    fb.innerHTML = `✅ <strong>Chính xác!</strong> &nbsp;<em>${v.word}</em> = ${v.meaning}`;
+    fb.className='fb show ok';
+    const speak=type==='phrase'?item.en:item.w;
+    fb.innerHTML=`✅ <strong>Chính xác!</strong> &nbsp;<button class="abtn" onclick="speakW('${speak.replace(/'/g,"\\'")}')">🔊</button> &nbsp;<em>${type==='phrase'?item.en:item.w}</em> = ${correct}`;
   } else {
     btn.classList.add('wrong');
     qWrong++;
-    fb.className = 'quiz-feedback show err';
-    fb.innerHTML = `❌ <strong>Sai rồi.</strong> Đáp án đúng: <strong>${correct}</strong> &nbsp;|&nbsp; <em>${v.example}</em>`;
+    fb.className='fb show err';
+    fb.innerHTML=`❌ <strong>Sai rồi.</strong> Đáp án đúng: <strong>${correct}</strong>`;
   }
-  document.getElementById('q-correct').textContent = qCorrect;
-  document.getElementById('q-wrong').textContent = qWrong;
-  if (qIdx < quizDeck.length-1) {
-    document.getElementById('btn-next-q').style.display = '';
-  } else {
-    setTimeout(showResult, 900);
-  }
+  document.getElementById('q-c').textContent=qCorrect;
+  document.getElementById('q-w').textContent=qWrong;
+  if(qIdx<qDeck.length-1) document.getElementById('q-next-btn').style.display='';
+  else setTimeout(showResult,700);
 }
 
-function nextQuestion() {
-  qIdx++;
-  renderQuestion();
-}
+function nextQ(){ qIdx++; renderQ(); }
 
-function showResult() {
-  document.getElementById('quiz-main').style.display = 'none';
-  const res = document.getElementById('quiz-result');
-  res.style.display = '';
-  const total = quizDeck.length;
-  const pct = Math.round((qCorrect/total)*100);
-  const ring = document.getElementById('result-ring');
-  const color = pct>=80?'var(--green)':pct>=50?'var(--yellow)':'var(--red)';
-  ring.style.borderColor = color;
-  ring.style.color = color;
-  ring.innerHTML = pct+'%';
-  document.getElementById('result-score').textContent = `${qCorrect} / ${total}`;
-  const labels = pct===100?'🎉 Hoàn hảo! Xuất sắc!':pct>=80?'🌟 Rất tốt! Tiếp tục phát huy!':pct>=60?'👍 Khá ổn! Hãy ôn lại những từ sai':pct>=40?'📚 Cần cố gắng thêm!':'💪 Hãy xem lại danh sách từ và thử lại!';
-  document.getElementById('result-label').textContent = labels;
+function showResult(){
+  document.getElementById('quiz-body').style.display='none';
+  document.getElementById('quiz-result').style.display='';
+  const total=qDeck.length;
+  const pct=Math.round((qCorrect/total)*100);
+  const color=pct>=80?'var(--green)':pct>=50?'var(--yellow)':'var(--red)';
+  const ring=document.getElementById('res-ring');
+  ring.style.borderColor=color; ring.style.color=color;
+  ring.textContent=pct+'%';
+  document.getElementById('res-big').textContent=`${qCorrect} / ${total}`;
+  const labels=pct===100?'🎉 Hoàn hảo!':pct>=80?'🌟 Rất tốt! Tiếp tục phát huy!':pct>=60?'👍 Khá ổn! Ôn lại từ sai nhé':pct>=40?'📚 Cần cố gắng thêm!':'💪 Xem lại danh sách từ và thử lại!';
+  document.getElementById('res-sub').textContent=labels;
 }
 </script>
 </body>
 </html>
+HTMLEOF
